@@ -1,7 +1,5 @@
 # Thư viện mẫu tài liệu văn phòng
 
-Bài kiểm tra thực hành vị trí **Fullstack Developer**: hai sản phẩm chạy được thực tế trên cùng một nền tảng.
-
 | Sản phẩm | Đường dẫn | Định dạng |
 |---|---|---|
 | 1. Thư viện mẫu văn bản | `/van-ban` | DOCX |
