@@ -1,0 +1,57 @@
+{
+  "slug": "bao-cao-kinh-doanh-quy",
+  "type": "presentation",
+  "name": "Báo cáo kinh doanh quý",
+  "description": "Bộ slide báo cáo kết quả quý: số liệu nổi bật, thách thức và kế hoạch tiếp theo.",
+  "category": {
+    "slug": "bao-cao",
+    "name": "Báo cáo"
+  },
+  "tags": [
+    "báo cáo",
+    "kinh doanh",
+    "quý"
+  ],
+  "fields": [
+    {
+      "key": "Quy",
+      "label": "Quý",
+      "defaultValue": "Q3/2026"
+    },
+    {
+      "key": "TenCongTy",
+      "label": "Tên công ty",
+      "defaultValue": "Công ty CP Sao Việt"
+    },
+    {
+      "key": "DoanhThu",
+      "label": "Doanh thu",
+      "defaultValue": "12,5 tỷ"
+    },
+    {
+      "key": "TangTruong",
+      "label": "Tăng trưởng",
+      "defaultValue": "+18%"
+    },
+    {
+      "key": "KhachHangMoi",
+      "label": "Khách hàng mới",
+      "defaultValue": "340"
+    },
+    {
+      "key": "NguoiTrinhBay",
+      "label": "Người trình bày",
+      "defaultValue": ""
+    },
+    {
+      "key": "NgayTrinhBay",
+      "label": "Ngày trình bày",
+      "defaultValue": ""
+    },
+    {
+      "key": "EmailLienHe",
+      "label": "Email liên hệ",
+      "defaultValue": "contact@example.com"
+    }
+  ]
+}

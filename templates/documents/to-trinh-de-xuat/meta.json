@@ -1,0 +1,57 @@
+{
+  "slug": "to-trinh-de-xuat",
+  "type": "document",
+  "name": "Tờ trình đề xuất",
+  "description": "Văn bản trình cấp trên phê duyệt một đề xuất, có căn cứ, nội dung và kinh phí.",
+  "category": {
+    "slug": "hanh-chinh",
+    "name": "Hành chính"
+  },
+  "tags": [
+    "tờ trình",
+    "đề xuất",
+    "phê duyệt"
+  ],
+  "fields": [
+    {
+      "key": "TenDonVi",
+      "label": "Đơn vị",
+      "defaultValue": "Phòng Hành chính"
+    },
+    {
+      "key": "SoVanBan",
+      "label": "Số văn bản",
+      "defaultValue": "12"
+    },
+    {
+      "key": "TrichYeu",
+      "label": "Trích yếu",
+      "defaultValue": "Đề xuất mua sắm thiết bị văn phòng"
+    },
+    {
+      "key": "NoiNhan",
+      "label": "Kính gửi",
+      "defaultValue": "Ban Giám đốc"
+    },
+    {
+      "key": "CanCu",
+      "label": "Căn cứ",
+      "defaultValue": ""
+    },
+    {
+      "key": "NoiDung",
+      "label": "Nội dung đề xuất",
+      "defaultValue": ""
+    },
+    {
+      "key": "KinhPhi",
+      "label": "Kinh phí",
+      "defaultValue": ""
+    },
+    {
+      "key": "NguoiTrinh",
+      "label": "Người trình",
+      "defaultValue": ""
+    }
+  ]
+}

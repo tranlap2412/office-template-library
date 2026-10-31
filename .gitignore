@@ -1,0 +1,10 @@
+.env
+docker-compose.override.yml
+node_modules/
+dist/
+backend/data/
+backend/src/generated/
+.DS_Store
+.idea/
+.vscode/
+__pycache__/

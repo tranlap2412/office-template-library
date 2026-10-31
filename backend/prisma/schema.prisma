@@ -1,0 +1,100 @@
+// Mô hình dữ liệu thư viện mẫu tài liệu văn phòng (PostgreSQL + Prisma 7).
+// Client được sinh vào src/generated/prisma, kết nối qua driver adapter @prisma/adapter-pg.
+
+generator client {
+  provider = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum DocumentKind {
+  document
+  presentation
+}
+
+model Category {
+  id        Int          @id @default(autoincrement())
+  slug      String       @db.VarChar(80)
+  name      String       @db.VarChar(120)
+  kind      DocumentKind
+  templates Template[]
+
+  @@unique([kind, slug])
+}
+
+/// Template gốc. File chỉ được đọc khi tạo tài liệu; mọi chỉnh sửa diễn ra trên bản sao (Document).
+model Template {
+  id          String            @id @default(uuid()) @db.Uuid
+  slug        String            @unique @db.VarChar(80)
+  kind        DocumentKind
+  name        String            @db.VarChar(200)
+  description String            @default("") @db.VarChar(1000)
+  categoryId  Int
+  category    Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  tags        String[]          @default([])
+  /// Tên + mô tả + danh mục + tag, chữ thường, đã bỏ dấu tiếng Việt – dùng cho tìm kiếm.
+  searchText  String            @default("") @db.VarChar(2000)
+  /// Đường dẫn tương đối trong kho template.
+  filePath    String            @db.VarChar(400)
+  fileSha256  String            @db.Char(64)
+  fileSize    Int               @default(0)
+  /// Tăng khi nội dung file template thay đổi.
+  version     Int               @default(1)
+  usageCount  Int               @default(0)
+  isActive    Boolean           @default(true)
+  createdAt   DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime          @default(now()) @db.Timestamptz(3)
+  previews    TemplatePreview[]
+  fields      TemplateField[]
+  documents   Document[]
+
+  @@index([kind, isActive])
+}
+
+model TemplatePreview {
+  id         Int      @id @default(autoincrement())
+  templateId String   @db.Uuid
+  template   Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  pageNumber Int
+  imagePath  String   @db.VarChar(400)
+
+  @@unique([templateId, pageNumber])
+}
+
+/// Placeholder {{key}} trong file template mà người dùng có thể điền khi tạo tài liệu.
+model TemplateField {
+  id           Int      @id @default(autoincrement())
+  templateId   String   @db.Uuid
+  template     Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  key          String   @db.VarChar(100)
+  label        String   @db.VarChar(200)
+  defaultValue String?  @db.VarChar(2000)
+  sortOrder    Int      @default(0)
+
+  @@unique([templateId, key])
+}
+
+/// Tài liệu người dùng tạo từ template – bản sao độc lập với file template.
+model Document {
+  id              String       @id @default(uuid()) @db.Uuid
+  /// Xóa template không xóa tài liệu đã tạo.
+  templateId      String?      @db.Uuid
+  template        Template?    @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  templateVersion Int
+  kind            DocumentKind
+  title           String       @db.VarChar(200)
+  filePath        String       @db.VarChar(400)
+  fileSize        Int          @default(0)
+  /// Tăng sau mỗi lần lưu; dùng làm document key cho trình soạn thảo.
+  version         Int          @default(1)
+  createdAt       DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime     @default(now()) @db.Timestamptz(3)
+
+  @@index([updatedAt])
+  @@index([kind])
+}

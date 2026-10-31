@@ -1,0 +1,47 @@
+{
+  "slug": "ke-hoach-du-an",
+  "type": "presentation",
+  "name": "Kế hoạch dự án",
+  "description": "Slide kick-off dự án: mục tiêu, mốc thời gian, nhân sự và rủi ro.",
+  "category": {
+    "slug": "quan-ly-du-an",
+    "name": "Quản lý dự án"
+  },
+  "tags": [
+    "dự án",
+    "kick-off",
+    "kế hoạch"
+  ],
+  "fields": [
+    {
+      "key": "TenDuAn",
+      "label": "Tên dự án",
+      "defaultValue": "Cổng thông tin nội bộ"
+    },
+    {
+      "key": "MucTieu",
+      "label": "Mục tiêu",
+      "defaultValue": "Số hóa 80% quy trình giấy tờ"
+    },
+    {
+      "key": "QuanLyDuAn",
+      "label": "Quản lý dự án",
+      "defaultValue": ""
+    },
+    {
+      "key": "NguoiTrinhBay",
+      "label": "Người trình bày",
+      "defaultValue": ""
+    },
+    {
+      "key": "NgayTrinhBay",
+      "label": "Ngày trình bày",
+      "defaultValue": ""
+    },
+    {
+      "key": "EmailLienHe",
+      "label": "Email liên hệ",
+      "defaultValue": "contact@example.com"
+    }
+  ]
+}

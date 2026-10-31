@@ -1,0 +1,67 @@
+# Chạy toàn bộ hệ thống:  cp .env.example .env  &&  docker compose up --build
+#   Ứng dụng web:        http://localhost:3000
+#   API + Swagger UI:     http://localhost:5080/swagger
+#   ONLYOFFICE (editor):  http://localhost:8081
+name: office-template-library
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: office_templates
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Tạo sẵn CSDL riêng cho `npm test` khi chạy test từ máy host.
+      - ./backend/scripts/create-test-db.sql:/docker-entrypoint-initdb.d/create-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d office_templates"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  onlyoffice:
+    image: onlyoffice/documentserver:8.3
+    environment:
+      JWT_ENABLED: "true"
+      JWT_SECRET: ${ONLYOFFICE_JWT_SECRET}
+      # Cho phép Document Server gọi API trong mạng Docker nội bộ (tải file, callback).
+      ALLOW_PRIVATE_IP_ADDRESS: "true"
+      ALLOW_META_IP_ADDRESS: "true"
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+
+  api:
+    build: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/office_templates
+      PREVIEWS_ENABLED: "true"
+      ADMIN_API_KEY: ${ADMIN_API_KEY}
+      ONLYOFFICE_ENABLED: "true"
+      ONLYOFFICE_PUBLIC_URL: http://localhost:8081
+      ONLYOFFICE_INTERNAL_URL: http://onlyoffice
+      ONLYOFFICE_API_BASE_URL: http://api:8080
+      ONLYOFFICE_JWT_SECRET: ${ONLYOFFICE_JWT_SECRET}
+    ports:
+      - "5080:8080"
+    volumes:
+      - ./templates:/templates          # kho template (meta.json + file + preview)
+      - documents:/app/data/documents   # tài liệu người dùng tạo
+
+  web:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "3000:80"
+
+volumes:
+  pgdata:
+  documents:

@@ -1,0 +1,87 @@
+{
+  "slug": "hop-dong-lao-dong",
+  "type": "document",
+  "name": "Hợp đồng lao động",
+  "description": "Mẫu hợp đồng lao động theo Bộ luật Lao động 2019, có bảng điều khoản và phần ký hai bên.",
+  "category": {
+    "slug": "nhan-su",
+    "name": "Nhân sự"
+  },
+  "tags": [
+    "hợp đồng",
+    "nhân sự",
+    "tuyển dụng"
+  ],
+  "fields": [
+    {
+      "key": "TenCongTy",
+      "label": "Tên công ty",
+      "defaultValue": "Công ty TNHH Giải pháp Văn phòng"
+    },
+    {
+      "key": "SoHopDong",
+      "label": "Số hợp đồng",
+      "defaultValue": "015"
+    },
+    {
+      "key": "NgayKy",
+      "label": "Ngày ký",
+      "defaultValue": "01/11/2026"
+    },
+    {
+      "key": "DiaDiemKy",
+      "label": "Địa điểm ký",
+      "defaultValue": "TP. Hồ Chí Minh"
+    },
+    {
+      "key": "NguoiDaiDien",
+      "label": "Người đại diện",
+      "defaultValue": "Nguyễn Văn A"
+    },
+    {
+      "key": "ChucVuDaiDien",
+      "label": "Chức vụ",
+      "defaultValue": "Giám đốc"
+    },
+    {
+      "key": "DiaChiCongTy",
+      "label": "Địa chỉ công ty",
+      "defaultValue": "123 Nguyễn Huệ, Quận 1, TP. HCM"
+    },
+    {
+      "key": "TenNguoiLaoDong",
+      "label": "Họ tên người lao động",
+      "defaultValue": ""
+    },
+    {
+      "key": "NgaySinh",
+      "label": "Ngày sinh",
+      "defaultValue": ""
+    },
+    {
+      "key": "SoCCCD",
+      "label": "Số CCCD",
+      "defaultValue": ""
+    },
+    {
+      "key": "ViTri",
+      "label": "Vị trí",
+      "defaultValue": "Fullstack Developer"
+    },
+    {
+      "key": "LoaiHopDong",
+      "label": "Loại hợp đồng",
+      "defaultValue": "Xác định thời hạn 12 tháng"
+    },
+    {
+      "key": "NgayBatDau",
+      "label": "Ngày bắt đầu",
+      "defaultValue": ""
+    },
+    {
+      "key": "MucLuong",
+      "label": "Mức lương",
+      "defaultValue": "25.000.000"
+    }
+  ]
+}

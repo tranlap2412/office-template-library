@@ -1,0 +1,47 @@
+{
+  "slug": "gioi-thieu-san-pham",
+  "type": "presentation",
+  "name": "Giới thiệu sản phẩm",
+  "description": "Bộ slide pitch sản phẩm: vấn đề, giải pháp, lợi ích định lượng và bảng giá.",
+  "category": {
+    "slug": "marketing",
+    "name": "Marketing"
+  },
+  "tags": [
+    "pitch",
+    "sản phẩm",
+    "bán hàng"
+  ],
+  "fields": [
+    {
+      "key": "TenSanPham",
+      "label": "Tên sản phẩm",
+      "defaultValue": "OfficeFlow"
+    },
+    {
+      "key": "Slogan",
+      "label": "Slogan",
+      "defaultValue": "Làm việc thông minh hơn mỗi ngày"
+    },
+    {
+      "key": "GiaCoBan",
+      "label": "Giá gói cơ bản",
+      "defaultValue": "199.000đ"
+    },
+    {
+      "key": "NguoiTrinhBay",
+      "label": "Người trình bày",
+      "defaultValue": ""
+    },
+    {
+      "key": "NgayTrinhBay",
+      "label": "Ngày trình bày",
+      "defaultValue": ""
+    },
+    {
+      "key": "EmailLienHe",
+      "label": "Email liên hệ",
+      "defaultValue": "contact@example.com"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "slug": "bien-ban-cuoc-hop",
+  "type": "document",
+  "name": "Biên bản cuộc họp",
+  "description": "Ghi nhận thời gian, thành phần, nội dung và bảng phân công sau cuộc họp.",
+  "category": {
+    "slug": "hanh-chinh",
+    "name": "Hành chính"
+  },
+  "tags": [
+    "biên bản",
+    "họp",
+    "hành chính"
+  ],
+  "fields": [
+    {
+      "key": "TenDonVi",
+      "label": "Tên đơn vị",
+      "defaultValue": "Phòng Kỹ thuật"
+    },
+    {
+      "key": "SoBienBan",
+      "label": "Số biên bản",
+      "defaultValue": "07"
+    },
+    {
+      "key": "ChuDe",
+      "label": "Chủ đề cuộc họp",
+      "defaultValue": "Kế hoạch phát triển sản phẩm Q4"
+    },
+    {
+      "key": "ThoiGian",
+      "label": "Thời gian",
+      "defaultValue": "09:00, ngày 01/11/2026"
+    },
+    {
+      "key": "DiaDiem",
+      "label": "Địa điểm",
+      "defaultValue": "Phòng họp tầng 5"
+    },
+    {
+      "key": "ChuTri",
+      "label": "Người chủ trì",
+      "defaultValue": ""
+    },
+    {
+      "key": "ThuKy",
+      "label": "Thư ký",
+      "defaultValue": ""
+    },
+    {
+      "key": "ThanhVien",
+      "label": "Thành viên tham dự",
+      "defaultValue": ""
+    }
+  ]
+}

@@ -1,0 +1,324 @@
+openapi: 3.1.0
+info:
+  title: Office Template Library API
+  version: 1.0.0
+  description: |
+    API thư viện mẫu văn bản (DOCX) và trình chiếu (PPTX).
+    Lỗi trả về `application/problem+json` (RFC 7807). Enum dùng chữ thường: `document` | `presentation`.
+servers:
+  - url: /
+tags:
+  - name: Templates
+  - name: Documents
+  - name: Admin
+  - name: Editor
+    description: Endpoint dành cho ONLYOFFICE Document Server
+
+paths:
+  /api/categories:
+    get:
+      tags: [Templates]
+      summary: Danh mục có ít nhất một template đang hoạt động
+      parameters:
+        - $ref: "#/components/parameters/type"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Category" } }
+
+  /api/templates:
+    get:
+      tags: [Templates]
+      summary: Tìm kiếm, lọc, phân trang template
+      parameters:
+        - $ref: "#/components/parameters/type"
+        - { name: q, in: query, schema: { type: string, maxLength: 200 }, description: "Từ khóa, không phân biệt hoa thường và dấu; mọi từ phải khớp" }
+        - { name: category, in: query, schema: { type: string }, description: Slug danh mục }
+        - { name: sort, in: query, schema: { type: string, enum: [name, newest, popular], default: name } }
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Paged"
+                  - properties: { items: { type: array, items: { $ref: "#/components/schemas/TemplateSummary" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+    post:
+      tags: [Admin]
+      summary: "[Quản trị] Upload template mới hoặc cập nhật template cùng slug (version tăng)"
+      security: [{ adminKey: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file, name]
+              properties:
+                file: { type: string, format: binary, description: ".docx hoặc .pptx, tối đa 30 MB" }
+                name: { type: string }
+                slug: { type: string, pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+                description: { type: string }
+                categorySlug: { type: string }
+                categoryName: { type: string }
+                tags: { type: string, description: Phân tách bởi dấu phẩy }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { $ref: "#/components/schemas/TemplateDetail" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Problem" }
+
+  /api/templates/{id}:
+    get:
+      tags: [Templates]
+      summary: Chi tiết template (trang/slide xem trước, các trường điền được)
+      parameters: [{ $ref: "#/components/parameters/id" }]
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/TemplateDetail" } } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/templates/{id}/previews/{page}:
+    get:
+      tags: [Templates]
+      summary: Ảnh PNG của trang/slide (bắt đầu từ 1). Có ETag và Cache-Control.
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - { name: page, in: path, required: true, schema: { type: integer, minimum: 1 } }
+      responses:
+        "200": { description: OK, content: { image/png: { schema: { type: string, format: binary } } } }
+        "304": { description: Not Modified }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/templates/{id}/documents:
+    post:
+      tags: [Documents]
+      summary: Tạo tài liệu mới (bản sao độc lập) từ template
+      parameters: [{ $ref: "#/components/parameters/id" }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string, maxLength: 200, description: Mặc định là tên template }
+                fields:
+                  type: object
+                  additionalProperties: { type: string }
+                  description: "Giá trị cho placeholder {{Key}}; trường bỏ trống dùng giá trị mặc định"
+            example: { title: "HĐLĐ - Trần Văn Lập", fields: { TenNguoiLaoDong: "Trần Văn Lập", MucLuong: "30.000.000" } }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { $ref: "#/components/schemas/Document" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "429": { $ref: "#/components/responses/Problem" }
+
+  /api/documents:
+    get:
+      tags: [Documents]
+      summary: Danh sách tài liệu, mới sửa trước
+      parameters:
+        - $ref: "#/components/parameters/type"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Paged"
+                  - properties: { items: { type: array, items: { $ref: "#/components/schemas/Document" } } }
+
+  /api/documents/{id}:
+    parameters: [{ $ref: "#/components/parameters/id" }]
+    get:
+      tags: [Documents]
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Document" } } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [Documents]
+      summary: Đổi tên
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [title], properties: { title: { type: string, maxLength: 200 } } } } }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Document" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+    delete:
+      tags: [Documents]
+      summary: Xóa tài liệu và file
+      responses:
+        "204": { description: Deleted }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/documents/{id}/download:
+    get:
+      tags: [Documents]
+      summary: Tải file DOCX/PPTX
+      parameters: [{ $ref: "#/components/parameters/id" }]
+      responses:
+        "200": { description: OK, content: { application/octet-stream: { schema: { type: string, format: binary } } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/documents/{id}/content:
+    put:
+      tags: [Documents]
+      summary: Tải lên bản đã sửa bằng ứng dụng ngoài (version + 1)
+      parameters: [{ $ref: "#/components/parameters/id" }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { type: object, required: [file], properties: { file: { type: string, format: binary } } }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Document" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
+  /api/documents/{id}/editor-config:
+    get:
+      tags: [Editor]
+      summary: Config ONLYOFFICE đã ký JWT, hoặc { enabled false, message } khi chưa bật
+      parameters: [{ $ref: "#/components/parameters/id" }]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled: { type: boolean }
+                  documentServerUrl: { type: string }
+                  config: { type: object }
+                  message: { type: string }
+
+  /api/documents/{id}/editor-content:
+    get:
+      tags: [Editor]
+      summary: "[Document Server] Tải nội dung tài liệu bằng token ký kèm URL"
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - { name: token, in: query, required: true, schema: { type: string } }
+      responses:
+        "200": { description: OK }
+        "401": { $ref: "#/components/responses/Problem" }
+
+  /api/documents/{id}/editor-callback:
+    post:
+      tags: [Editor]
+      summary: "[Document Server] Callback lưu tài liệu (JWT trong body hoặc header Authorization)"
+      parameters: [{ $ref: "#/components/parameters/id" }]
+      responses:
+        "200":
+          description: "Luôn trả { error: 0 } (OK) hoặc { error: 1 } theo giao thức ONLYOFFICE"
+          content: { application/json: { schema: { type: object, properties: { error: { type: integer, enum: [0, 1] } } } } }
+
+  /api/admin/templates/sync:
+    post:
+      tags: [Admin]
+      summary: "[Quản trị] Đồng bộ lại kho template từ thư mục"
+      security: [{ adminKey: [] }]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  added: { type: integer }
+                  updated: { type: integer }
+                  unchanged: { type: integer }
+                  deactivated: { type: integer }
+                  errors: { type: array, items: { type: string } }
+        "401": { $ref: "#/components/responses/Problem" }
+
+components:
+  securitySchemes:
+    adminKey: { type: apiKey, in: header, name: X-Admin-Key }
+
+  parameters:
+    id: { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+    type: { name: type, in: query, schema: { $ref: "#/components/schemas/DocumentKind" } }
+    page: { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+    pageSize: { name: pageSize, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 24 } }
+
+  responses:
+    BadRequest: { description: Dữ liệu không hợp lệ, content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } } }
+    NotFound: { description: Không tìm thấy, content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } } }
+    Problem: { description: Lỗi, content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } } }
+
+  schemas:
+    DocumentKind: { type: string, enum: [document, presentation] }
+    CategoryRef:
+      type: object
+      properties: { slug: { type: string }, name: { type: string } }
+    Category:
+      allOf:
+        - $ref: "#/components/schemas/CategoryRef"
+        - properties: { kind: { $ref: "#/components/schemas/DocumentKind" }, templateCount: { type: integer } }
+    TemplateSummary:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        slug: { type: string }
+        kind: { $ref: "#/components/schemas/DocumentKind" }
+        name: { type: string }
+        description: { type: string }
+        category: { $ref: "#/components/schemas/CategoryRef" }
+        tags: { type: array, items: { type: string } }
+        thumbnailUrl: { type: string }
+        pageCount: { type: integer }
+        version: { type: integer }
+        usageCount: { type: integer }
+        updatedAt: { type: string, format: date-time }
+    TemplateDetail:
+      allOf:
+        - $ref: "#/components/schemas/TemplateSummary"
+        - properties:
+            fileSize: { type: integer }
+            fileExtension: { type: string, enum: [.docx, .pptx] }
+            previews:
+              type: array
+              items: { type: object, properties: { pageNumber: { type: integer }, imageUrl: { type: string } } }
+            fields:
+              type: array
+              items: { type: object, properties: { key: { type: string }, label: { type: string }, defaultValue: { type: string } } }
+    Document:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        kind: { $ref: "#/components/schemas/DocumentKind" }
+        templateId: { type: string, format: uuid }
+        templateName: { type: string }
+        templateVersion: { type: integer }
+        version: { type: integer }
+        fileSize: { type: integer }
+        fileExtension: { type: string }
+        thumbnailUrl: { type: string }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    Paged:
+      type: object
+      properties:
+        page: { type: integer }
+        pageSize: { type: integer }
+        totalCount: { type: integer }
+        totalPages: { type: integer }
+    Problem:
+      type: object
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        errors: { type: object, additionalProperties: { type: array, items: { type: string } } }
+        traceId: { type: string }

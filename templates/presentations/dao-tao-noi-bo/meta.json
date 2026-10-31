@@ -1,0 +1,47 @@
+{
+  "slug": "dao-tao-noi-bo",
+  "type": "presentation",
+  "name": "Đào tạo nội bộ",
+  "description": "Bộ slide cho buổi đào tạo: mục tiêu, nội dung chính và lịch trình.",
+  "category": {
+    "slug": "dao-tao",
+    "name": "Đào tạo"
+  },
+  "tags": [
+    "đào tạo",
+    "nội bộ",
+    "onboarding"
+  ],
+  "fields": [
+    {
+      "key": "ChuDeDaoTao",
+      "label": "Chủ đề",
+      "defaultValue": "Bảo mật thông tin"
+    },
+    {
+      "key": "ThoiLuong",
+      "label": "Thời lượng",
+      "defaultValue": "3 buổi"
+    },
+    {
+      "key": "HinhThuc",
+      "label": "Hình thức",
+      "defaultValue": "Trực tiếp + trực tuyến"
+    },
+    {
+      "key": "NguoiTrinhBay",
+      "label": "Người trình bày",
+      "defaultValue": ""
+    },
+    {
+      "key": "NgayTrinhBay",
+      "label": "Ngày trình bày",
+      "defaultValue": ""
+    },
+    {
+      "key": "EmailLienHe",
+      "label": "Email liên hệ",
+      "defaultValue": "contact@example.com"
+    }
+  ]
+}

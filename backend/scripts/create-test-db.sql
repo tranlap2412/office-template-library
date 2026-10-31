@@ -1,0 +1,1 @@
+CREATE DATABASE office_templates_test;

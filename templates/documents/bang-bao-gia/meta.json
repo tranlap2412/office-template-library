@@ -1,0 +1,57 @@
+{
+  "slug": "bang-bao-gia",
+  "type": "document",
+  "name": "Bảng báo giá",
+  "description": "Báo giá sản phẩm/dịch vụ với bảng hạng mục, tổng tiền và điều kiện thương mại.",
+  "category": {
+    "slug": "kinh-doanh",
+    "name": "Kinh doanh"
+  },
+  "tags": [
+    "báo giá",
+    "bán hàng",
+    "kinh doanh"
+  ],
+  "fields": [
+    {
+      "key": "TenCongTy",
+      "label": "Tên công ty",
+      "defaultValue": "Công ty CP Phần mềm Sao Việt"
+    },
+    {
+      "key": "DiaChiCongTy",
+      "label": "Địa chỉ",
+      "defaultValue": "45 Lê Lợi, Quận 1, TP. HCM"
+    },
+    {
+      "key": "Hotline",
+      "label": "Hotline",
+      "defaultValue": "1900 1234"
+    },
+    {
+      "key": "SoBaoGia",
+      "label": "Số báo giá",
+      "defaultValue": "BG-2026-118"
+    },
+    {
+      "key": "NgayBaoGia",
+      "label": "Ngày báo giá",
+      "defaultValue": ""
+    },
+    {
+      "key": "TenKhachHang",
+      "label": "Khách hàng",
+      "defaultValue": ""
+    },
+    {
+      "key": "HieuLuc",
+      "label": "Hiệu lực (ngày)",
+      "defaultValue": "30"
+    },
+    {
+      "key": "NguoiLap",
+      "label": "Người lập",
+      "defaultValue": ""
+    }
+  ]
+}

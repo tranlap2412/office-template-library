@@ -1,0 +1,72 @@
+{
+  "slug": "don-xin-nghi-phep",
+  "type": "document",
+  "name": "Đơn xin nghỉ phép",
+  "description": "Đơn xin nghỉ phép ngắn gọn, có bảng thông tin thời gian nghỉ và người bàn giao.",
+  "category": {
+    "slug": "nhan-su",
+    "name": "Nhân sự"
+  },
+  "tags": [
+    "đơn",
+    "nghỉ phép",
+    "nhân sự"
+  ],
+  "fields": [
+    {
+      "key": "NguoiNhan",
+      "label": "Kính gửi",
+      "defaultValue": "Ban Giám đốc Công ty"
+    },
+    {
+      "key": "HoTen",
+      "label": "Họ và tên",
+      "defaultValue": ""
+    },
+    {
+      "key": "ChucVu",
+      "label": "Chức vụ",
+      "defaultValue": ""
+    },
+    {
+      "key": "BoPhan",
+      "label": "Bộ phận",
+      "defaultValue": ""
+    },
+    {
+      "key": "TuNgay",
+      "label": "Từ ngày",
+      "defaultValue": ""
+    },
+    {
+      "key": "DenNgay",
+      "label": "Đến ngày",
+      "defaultValue": ""
+    },
+    {
+      "key": "SoNgay",
+      "label": "Số ngày nghỉ",
+      "defaultValue": ""
+    },
+    {
+      "key": "LyDo",
+      "label": "Lý do",
+      "defaultValue": ""
+    },
+    {
+      "key": "NguoiBanGiao",
+      "label": "Người nhận bàn giao",
+      "defaultValue": ""
+    },
+    {
+      "key": "DiaDiem",
+      "label": "Địa điểm",
+      "defaultValue": "TP. Hồ Chí Minh"
+    },
+    {
+      "key": "NgayLam",
+      "label": "Ngày làm đơn",
+      "defaultValue": ""
+    }
+  ]
+}

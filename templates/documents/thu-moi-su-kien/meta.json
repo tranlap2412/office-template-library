@@ -1,0 +1,56 @@
+{
+  "slug": "thu-moi-su-kien",
+  "type": "document",
+  "name": "Thư mời sự kiện",
+  "description": "Thư mời trang trọng cho hội nghị, khai trương hoặc tiệc cuối năm.",
+  "category": {
+    "slug": "su-kien",
+    "name": "Sự kiện"
+  },
+  "tags": [
+    "thư mời",
+    "sự kiện"
+  ],
+  "fields": [
+    {
+      "key": "TenCongTy",
+      "label": "Đơn vị tổ chức",
+      "defaultValue": "Công ty TNHH Giải pháp Văn phòng"
+    },
+    {
+      "key": "TenSuKien",
+      "label": "Tên sự kiện",
+      "defaultValue": "Tiệc tất niên 2026"
+    },
+    {
+      "key": "KhachMoi",
+      "label": "Khách mời",
+      "defaultValue": ""
+    },
+    {
+      "key": "ThoiGian",
+      "label": "Thời gian",
+      "defaultValue": "18:00, Thứ Sáu 25/12/2026"
+    },
+    {
+      "key": "DiaDiem",
+      "label": "Địa điểm",
+      "defaultValue": "Khách sạn Rex, 141 Nguyễn Huệ, Q.1"
+    },
+    {
+      "key": "TrangPhuc",
+      "label": "Trang phục",
+      "defaultValue": "Lịch sự"
+    },
+    {
+      "key": "HanXacNhan",
+      "label": "Hạn xác nhận",
+      "defaultValue": ""
+    },
+    {
+      "key": "LienHe",
+      "label": "Số liên hệ",
+      "defaultValue": "0909 000 111"
+    }
+  ]
+}
